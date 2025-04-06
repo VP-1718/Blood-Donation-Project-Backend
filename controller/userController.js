@@ -35,7 +35,7 @@ const loginUser = async (req, res) => {
 };
 
 const getDonors = async (req, res) => {
-  const { bloodGroup, location } = req.query;
+  const { bloodGroup, location } = req.body;
   const donors = await User.find({
     role: 'donor',
     isAvailable: true,
