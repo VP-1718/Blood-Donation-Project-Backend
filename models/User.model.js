@@ -43,8 +43,8 @@ const userSchema = new mongoose.Schema({
   bloodType: String,
   location: String,
   phone: String,
-  lastDonationDate: Date,
-  isDonor: String,
+  lastDonation: Date,
+  isDonor: Boolean,
   isAvailable: { type: Boolean, default: true }
 });
 
