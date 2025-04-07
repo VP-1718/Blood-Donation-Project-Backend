@@ -47,10 +47,11 @@ const updateUserProfile = async (req, res) => {
       return res.status(404).json({message: "user not found"})
     }
 
-    Object.keys(updatedData).forEach((key) =>{
-      user[key] = updatedData[key]
-    });
+    // Object.keys(updatedData).forEach((key) =>{
+    //   user[key] = updatedData[key]
+    // });
 
+    Object.assign(user,updatedData);
     const updatedUser = await user.save();
 
     res.json({
