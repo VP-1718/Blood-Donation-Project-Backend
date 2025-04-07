@@ -1,5 +1,6 @@
 const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
+const { json } = require('express');
 const jwt = require('jsonwebtoken');
 
 const registerUser = async (req, res) => {
@@ -34,16 +35,33 @@ const loginUser = async (req, res) => {
   res.json({ token, user });
 };
 
+const getUserProfile = async (req, res) => {
+  const { userId } = req.params
+
+  try{
+    const user = await User.findById(userId).select("-password");
+    if(!user){
+      return res.status(404).json({messgae: "user not found"})
+    }
+    res.json(user)
+  }catch(error){
+    console.log("error fetching user",error)
+    res.status(500).json({message: "internal server error"})
+  }
+}
+
 const getDonors = async (req, res) => {
   const { bloodType, location } = req.query;
   const donors = await User.find({
     role: 'donor',
     isAvailable: true,
-    ...(bloodType && { bloodType }),
-    ...(location && { location })
+    bloodType,
+    location
+    // ...(bloodType && { bloodType }),
+    // ...(location && { location })
   });
-
+  // console.log(bloodType,location)
   res.json(donors);
 };
 
-module.exports = { registerUser, loginUser, getDonors };
+module.exports = { registerUser, loginUser, getDonors, getUserProfile };
