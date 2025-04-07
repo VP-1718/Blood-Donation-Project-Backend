@@ -44,6 +44,7 @@ const userSchema = new mongoose.Schema({
   location: String,
   phone: String,
   lastDonationDate: Date,
+  isDonor: String,
   isAvailable: { type: Boolean, default: true }
 });
 
