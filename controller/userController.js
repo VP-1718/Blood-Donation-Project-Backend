@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const registerUser = async (req, res) => {
-  const { name, email, password, role, bloodGroup, location, contact } = req.body;
+  const { name, email, password, role, bloodType, location, phone } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -12,9 +12,9 @@ const registerUser = async (req, res) => {
     email,
     password: hashedPassword,
     role,
-    bloodGroup,
+    bloodType,
     location,
-    contact
+    phone
   });
 
   await user.save();
@@ -35,11 +35,11 @@ const loginUser = async (req, res) => {
 };
 
 const getDonors = async (req, res) => {
-  const { bloodGroup, location } = req.query;
+  const { bloodType, location } = req.query;
   const donors = await User.find({
     role: 'donor',
     isAvailable: true,
-    ...(bloodGroup && { bloodGroup }),
+    ...(bloodType && { bloodType }),
     ...(location && { location })
   });
 
