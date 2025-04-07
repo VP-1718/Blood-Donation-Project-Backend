@@ -37,18 +37,44 @@ const loginUser = async (req, res) => {
   res.json({ token, user });
 };
 
+const updateUserProfile = async (req, res) => {
+  const { userId } = req.params
+  const updatedData = req.body
+
+  try{
+    const user = User.findById(userId)
+    if(!user){
+      return res.status(404).json({message: "user not found"})
+    }
+
+    Object.keys(updatedData).forEach((key) =>{
+      user[key] = updatedData[key]
+    });
+
+    const updatedUser = await user.save();
+
+    res.json({
+      message: "profile updated successfully",
+      user: updatedUser
+    })
+  }catch(error){
+    console.error("error updating user profile:", error);
+    res.status(500).json({message: "internal server error"})
+  }
+}
+
 const getUserProfile = async (req, res) => {
   const { userId } = req.params
 
-  try{
+  try {
     const user = await User.findById(userId).select("-password");
-    if(!user){
-      return res.status(404).json({messgae: "user not found"})
+    if (!user) {
+      return res.status(404).json({ messgae: "user not found" })
     }
     res.json(user)
-  }catch(error){
-    console.log("error fetching user",error)
-    res.status(500).json({message: "internal server error"})
+  } catch (error) {
+    console.log("error fetching user", error)
+    res.status(500).json({ message: "internal server error" })
   }
 }
 
@@ -64,4 +90,4 @@ const getDonors = async (req, res) => {
   res.json(donors);
 };
 
-module.exports = { registerUser, loginUser, getDonors, getUserProfile };
+module.exports = { registerUser, loginUser, getDonors, getUserProfile, updateUserProfile };
