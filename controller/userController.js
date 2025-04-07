@@ -55,10 +55,8 @@ const getDonors = async (req, res) => {
   const donors = await User.find({
     role: 'donor',
     isAvailable: true,
-    bloodType,
-    location
-    // ...(bloodType && { bloodType }),
-    // ...(location && { location })
+    ...(bloodType && { bloodType }),
+    ...(location && { location })
   });
   // console.log(bloodType,location)
   res.json(donors);
