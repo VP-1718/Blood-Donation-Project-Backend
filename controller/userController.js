@@ -4,7 +4,7 @@ const { json } = require('express');
 const jwt = require('jsonwebtoken');
 
 const registerUser = async (req, res) => {
-  const { name, email, password, role, bloodType, location, phone } = req.body;
+  const { name, email, password, role, bloodType, location, phone, isDonor, lastDonation } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -15,7 +15,9 @@ const registerUser = async (req, res) => {
     role,
     bloodType,
     location,
-    phone
+    phone,
+    isDonor,
+    lastDonation
   });
 
   await user.save();
