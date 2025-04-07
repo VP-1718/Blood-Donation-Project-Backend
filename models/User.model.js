@@ -40,9 +40,9 @@ const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
   role: { type: String, enum: ['donor', 'receiver'], default: 'donor' },
-  bloodGroup: String,
+  bloodType: String,
   location: String,
-  contact: String,
+  phone: String,
   lastDonationDate: Date,
   isAvailable: { type: Boolean, default: true }
 });
