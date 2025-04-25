@@ -5,9 +5,9 @@ const { registerUser, loginUser, getDonors, getUserProfile, updateUserProfile, g
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/donors', getDonors); // public donor search
+router.get('/organDonors', getOrganDonors);
 router.get('/:userId',getUserProfile);
 router.put('/:userId',updateUserProfile);
-router.get('/organDonors', getOrganDonors);
 
 module.exports = router;
 
