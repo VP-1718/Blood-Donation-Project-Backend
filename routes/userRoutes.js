@@ -7,7 +7,7 @@ router.post('/login', loginUser);
 router.get('/donors', getDonors); // public donor search
 router.get('/:userId',getUserProfile);
 router.put('/:userId',updateUserProfile);
-router.get('/organ-donors', getOrganDonors);
+router.get('/organDonors', getOrganDonors);
 
 module.exports = router;
 
