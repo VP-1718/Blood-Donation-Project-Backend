@@ -45,6 +45,8 @@ const userSchema = new mongoose.Schema({
   phone: String,
   lastDonation: Date,
   isDonor: Boolean,
+  organDonor: { type: Boolean, default: false },
+  organs: [{ type: String }],
   isAvailable: { type: Boolean, default: true }
 });
 

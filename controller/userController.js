@@ -4,7 +4,7 @@ const { json } = require('express');
 const jwt = require('jsonwebtoken');
 
 const registerUser = async (req, res) => {
-  const { name, email, password, role, bloodType, location, phone, isDonor, lastDonation } = req.body;
+  const { name, email, password, role, bloodType, location, phone, isDonor, organDonor, organs, lastDonation } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -17,6 +17,8 @@ const registerUser = async (req, res) => {
     location,
     phone,
     isDonor,
+    organDonor,
+    organs,
     lastDonation
   });
 
@@ -41,13 +43,13 @@ const updateUserProfile = async (req, res) => {
   const { userId } = req.params
   const updatedData = req.body
 
-  try{
+  try {
     const user = await User.findById(userId)
-    if(!user){
-      return res.status(404).json({message: "user not found"})
+    if (!user) {
+      return res.status(404).json({ message: "user not found" })
     }
 
-    Object.keys(updatedData).forEach((key) =>{
+    Object.keys(updatedData).forEach((key) => {
       user[key] = updatedData[key]
     });
 
@@ -58,9 +60,9 @@ const updateUserProfile = async (req, res) => {
       message: "profile updated successfully",
       user: updatedUser
     })
-  }catch(error){
+  } catch (error) {
     console.error("error updating user profile:", error);
-    res.status(500).json({message: "internal server error"})
+    res.status(500).json({ message: "internal server error" })
   }
 }
 
@@ -91,4 +93,23 @@ const getDonors = async (req, res) => {
   res.json(donors);
 };
 
-module.exports = { registerUser, loginUser, getDonors, getUserProfile, updateUserProfile };
+const getOrganDonors = async (req, res) => {
+  const { location, organ } = req.query;
+
+  try {
+    const filter = {
+      organDonor: true,
+      ...(location && { location }),
+      ...(organ && { organs: organ }), // checks if 'organ' is in organs array
+    };
+
+    const donors = await User.find(filter).select("-password");
+    res.json(donors);
+  } catch (error) {
+    console.error("Error fetching organ donors:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+module.exports = { registerUser, loginUser, getDonors, getUserProfile, updateUserProfile, getOrganDonors };
