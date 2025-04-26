@@ -49,9 +49,9 @@ const getOrganDonors = async (req, res) => {
         ...(organ && { organs: organ }), // checks if 'organ' is in organs array
       };
   
-      const donors = await OrganDonor.find(filter);
-      console.log('executed successfully');
-      console.log(donors);
+      const donors = await OrganDonor.find({
+        consent: true,
+      });
       res.json(donors);
     } catch (error) {
       console.error("Error fetching organ donors:", error);
