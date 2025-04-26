@@ -93,23 +93,23 @@ const getDonors = async (req, res) => {
   res.json(donors);
 };
 
-const getOrganDonors = async (req, res) => {
-  const { location, organ } = req.query;
+// const getOrganDonors = async (req, res) => {
+//   const { location, organ } = req.query;
 
-  try {
-    const filter = {
-      organDonor: true,
-      ...(location && { location }),
-      ...(organ && { organs: organ }), // checks if 'organ' is in organs array
-    };
+//   try {
+//     const filter = {
+//       organDonor: true,
+//       ...(location && { location }),
+//       ...(organ && { organs: organ }), // checks if 'organ' is in organs array
+//     };
 
-    const donors = await User.find(filter).select("-password");
-    res.json(donors);
-  } catch (error) {
-    console.error("Error fetching organ donors:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+//     const donors = await User.find(filter).select("-password");
+//     res.json(donors);
+//   } catch (error) {
+//     console.error("Error fetching organ donors:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
 
 
-module.exports = { registerUser, loginUser, getDonors, getUserProfile, updateUserProfile, getOrganDonors };
+module.exports = { registerUser, loginUser, getDonors, getUserProfile, updateUserProfile};
